@@ -39,11 +39,15 @@ public class EmpregadoService {
     return empregadoRepo.findAll();
   }
 
-  public Empregado getByCtps(Long ctps) {
-    return empregadoRepo.findByCtps(ctps);
-  }
-
-  public Empregado getByEmail(String email) {
-    return empregadoRepo.findByEmail(email);
-  }
+  public List<Empregado> buscarEmpregados(Long ctps, String email) {
+    if (ctps != null && email != null) {
+      return empregadoRepo.findByCtpsOrEmail(ctps, email);
+    } else if (ctps != null) {
+      return empregadoRepo.findByCtps(ctps);
+    } else if (email != null) {
+      return empregadoRepo.findByEmail(email);
+    } else {
+      return empregadoRepo.findAll();
+    }
+}
 }

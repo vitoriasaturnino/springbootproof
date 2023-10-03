@@ -29,21 +29,15 @@ public class EmpregadoController {
     return new ResponseEntity<>(empregados, HttpStatus.OK);
   }
 
-  @GetMapping("/ctps/{ctps}")
-  public ResponseEntity<Empregado> getEmpregadoByCtps(@PathVariable Long ctps) {
-    Empregado empregado = empregadoService.getByCtps(ctps);
-    if (empregado != null) {
-      return new ResponseEntity<>(empregado, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-  }
+  @GetMapping("/buscar")
+  public ResponseEntity<List<Empregado>> buscarPorCtpsOuEmail(
+      @RequestParam(name = "ctps", required = false) Long ctps, 
+      @RequestParam(name = "email", required = false) String email) {
 
-  @GetMapping("/email/{email}")
-  public ResponseEntity<Empregado> getEmpregadoByEmail(@PathVariable String email) {
-    Empregado empregado = empregadoService.getByEmail(email);
-    if (empregado != null) {
-      return new ResponseEntity<>(empregado, HttpStatus.OK);
+    List<Empregado> empregados = empregadoService.buscarEmpregados(ctps, email);
+
+    if (empregados != null && !empregados.isEmpty()) {
+      return new ResponseEntity<>(empregados, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
